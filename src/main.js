@@ -1,5 +1,4 @@
-function getMenuMarkup() {
-	return `<section class="control__btn-wrap">
+const getMenuMarkup = () => `<section class="control__btn-wrap">
 	          <input
 	            type="radio"
 	            name="control"
@@ -27,10 +26,8 @@ function getMenuMarkup() {
 	            >STATISTICS</label
 	          >
 	        </section>`;
-}
 
-function getSearchMarkup() {
-	return `<section class="main__search search container">
+const getSearchMarkup = () => `<section class="main__search search container">
 		        <input
 		          type="text"
 		          id="search__input"
@@ -39,10 +36,8 @@ function getSearchMarkup() {
 		        />
 		        <label class="visually-hidden" for="search__input">Search</label>
 		      </section>`;
-}
 
-function getFiltersMarkup() {
-	return `<section class="main__filter filter container">
+const getFiltersMarkup = () => `<section class="main__filter filter container">
 		        <input
 		          type="radio"
 		          id="filter__all"
@@ -110,10 +105,8 @@ function getFiltersMarkup() {
 		          >Archive <span class="filter__archive-count">115</span></label
 		        >
 		      </section>`;
-}
 
-function getTaskBoardMarkup() {
-	return `<section class="board container">
+const getTaskBoardMarkup = () => `<section class="board container">
 		        <div class="board__filter-list">
 		          <a href="#" class="board__filter">SORT BY DEFAULT</a>
 		          <a href="#" class="board__filter">SORT BY DATE up</a>
@@ -121,11 +114,9 @@ function getTaskBoardMarkup() {
 		        </div>
 		        <div class="board__tasks"></div>
 		        </section>`;
-}
 
 
-function getCardMarkup() {
-	return `<article class="card card--black">
+const getCardMarkup = () => `<article class="card card--black">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
@@ -190,10 +181,8 @@ function getCardMarkup() {
 	              </div>
 	            </div>
 	          </article>`;
-}
 
-function getNewTaskMarkup() {
-	return `<article class="card card--edit card--black">
+const getNewTaskMarkup = () => `<article class="card card--edit card--black">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -414,11 +403,8 @@ function getNewTaskMarkup() {
 		              </div>
 		            </form>
 		          </article>`;
-}
 
-function getLoadMoreMarkup() {
-	return `<button class="load-more" type="button">load more</button>`;
-}
+const getLoadMoreMarkup = () => `<button class="load-more" type="button">load more</button>`;
 
 
 function renderComponent(componentContainer, markup) {
@@ -433,13 +419,13 @@ renderComponent(mainContainer, getSearchMarkup());
 renderComponent(mainContainer, getFiltersMarkup());
 renderComponent(mainContainer, getTaskBoardMarkup());
 
-const TaskContainer = document.querySelector(`.board__tasks`);
+const taskContainer = document.querySelector(`.board__tasks`);
 
-renderComponent(TaskContainer, getNewTaskMarkup());
+renderComponent(taskContainer, getNewTaskMarkup());
 
 for (let i = 0; i<3; i++) {
-	renderComponent(TaskContainer, getCardMarkup());
+	renderComponent(taskContainer, getCardMarkup());
 	}
 
-const BoardContainer = document.querySelector(`.board.container`);
-renderComponent(BoardContainer, getLoadMoreMarkup());
+const boardContainer = document.querySelector(`.board.container`);
+renderComponent(boardContainer, getLoadMoreMarkup());
