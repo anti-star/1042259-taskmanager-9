@@ -1,3 +1,5 @@
+'use strict';
+
 const getMenuMarkup = () => `<section class="control__btn-wrap">
 	          <input
 	            type="radio"
@@ -423,9 +425,9 @@ const taskContainer = document.querySelector(`.board__tasks`);
 
 renderComponent(taskContainer, getNewTaskMarkup());
 
-for (let i = 0; i<3; i++) {
+for (let i = 0; i < 3; i++) {
 	renderComponent(taskContainer, getCardMarkup());
-	}
+}
 
 const boardContainer = document.querySelector(`.board.container`);
 renderComponent(boardContainer, getLoadMoreMarkup());
