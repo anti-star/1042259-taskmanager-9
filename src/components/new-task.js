@@ -1,5 +1,5 @@
 export const getNewTaskMarkup = () => {
-	return `<article class="card card--edit card--black">
+  return `<article class="card card--edit card--black">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -219,5 +219,5 @@ export const getNewTaskMarkup = () => {
 		                </div>
 		              </div>
 		            </form>
-				  </article>`
+				  </article>`;
 };

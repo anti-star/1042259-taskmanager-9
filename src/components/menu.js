@@ -1,5 +1,5 @@
 export const getMenuMarkup = () => {
-	return `<section class="control__btn-wrap">
+  return `<section class="control__btn-wrap">
 	          <input
 	            type="radio"
 	            name="control"
@@ -26,5 +26,5 @@ export const getMenuMarkup = () => {
 	          <label for="control__statistic" class="control__label"
 	            >STATISTICS</label
 	          >
-			</section>`
+			</section>`;
 };

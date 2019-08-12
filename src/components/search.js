@@ -1,5 +1,5 @@
 export const getSearchMarkup = () => {
-	return `<section class="main__search search container">
+  return `<section class="main__search search container">
 		        <input
 		          type="text"
 		          id="search__input"
@@ -7,5 +7,5 @@ export const getSearchMarkup = () => {
 		          placeholder="START TYPING — SEARCH BY WORD, #HASHTAG OR DATE"
 		        />
 		        <label class="visually-hidden" for="search__input">Search</label>
-			  </section>`
+			  </section>`;
 };

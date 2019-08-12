@@ -63,5 +63,5 @@ export const getCardMarkup = () => {
 	                </div>
 	              </div>
 	            </div>
-			  </article>`
+			  </article>`;
 };
