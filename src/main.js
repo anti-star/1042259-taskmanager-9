@@ -15,15 +15,17 @@ const renderComponent = (componentContainer, markup, place = `beforeend`) => {
 const menuContainer = document.querySelector(`.main__control.control.container`);
 renderComponent(menuContainer, getMenuMarkup());
 
-const TASK_COUNT = 13;
-const TASKS = new Array(TASK_COUNT)
-.fill(``)
-.map(getTaskRandom);
+const TASK_COUNT = 16;
+const getTasksArray = (count) => {
+  return new Array(count).fill(``).map(getTaskRandom);
+};
+
+let TASKS = getTasksArray(TASK_COUNT);
 
 const PAGE_SIZE = 8;
 const PAGE_COUNT = Math.ceil(TASK_COUNT / PAGE_SIZE);
 
-const FILTERS = filters(TASKS);
+let FILTERS = filters(TASKS);
 
 const mainContainer = document.querySelector(`.main`);
 renderComponent(mainContainer, getSearchMarkup());
@@ -70,7 +72,7 @@ const renderTasksPage = () => {
   currentPage++;
 };
 
-if (currentPage < PAGE_COUNT - 1) {
+if (currentPage <= PAGE_COUNT - 1) {
   showButton();
 } else {
   hideButton();

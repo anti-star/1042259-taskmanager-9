@@ -1,34 +1,7 @@
-const getDate = (time) => {
-  const NAMES_MONTH = [
-    `JANUARY`,
-    `FEBRUARY`,
-    `MARCH`,
-    `APRIL`,
-    `MAY`,
-    `JUNE`,
-    `JULY`,
-    `AUGUST`,
-    `SEPTEMBER`,
-    `OCTOBER`,
-    `NOVEMBER`,
-    `DECEMBER`];
-  return (new Date(time).getDate() + ` ` + NAMES_MONTH[new Date(time).getMonth()]);
-};
-
-const getTime = (time) => {
-  let hours = new Date(time).getHours();
-  let minutes = new Date(time).getMinutes();
-  let dd = `AM`;
-  if ((hours > 12) || (hours === 0)) {
-    hours = hours - 12;
-    dd = `PM`;
-  }
-  minutes = minutes < 10 ? `0` + minutes : minutes;
-  return (hours + `:` + minutes + ` ` + dd);
-};
-
 export const makeTaskEdit = (task) => {
-  return `<article class="card card--edit card--${task.color} ${Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]) ? `card--repeat` : ``}
+  let repeatDay = task.repeatingDays;
+  let repeatDayObj = Object.keys(repeatDay);
+  return `<article class="card card--edit card--${task.color} ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
   ${task.isFavorite ? `card--favorite` : ``}
   ${task.isArchive ? `card--archive` : ``}
   ${task.dueDate === Date.now() ? `card--deadline` : ``}">
@@ -66,17 +39,17 @@ export const makeTaskEdit = (task) => {
 		                  <div class="card__details">
 		                    <div class="card__dates">
 		                      <button class="card__date-deadline-toggle" type="button">
-								date: <span class="card__date-status">${task.dueDate > 1 ? `yes` : `no`}</span>
+								date: <span class="card__date-status">${task.dueDate ? `yes` : `no`}</span>
 		                      </button>
 
-		                      <fieldset class="card__date-deadline" ${task.dueDate > 1 ? `` : `disabled`}>
+		                      <fieldset class="card__date-deadline" ${task.dueDate ? `` : `disabled`}>
 		                        <label class="card__input-deadline-wrap">
 		                          <input
 		                            class="card__date"
 		                            type="text"
 		                            placeholder=""
 									name="date"
-									value="${getDate(task.dueDate)} ${getTime(task.dueDate)}"
+									value="${task.dueDate.join(` `)}"
 		                          />
 		                        </label>
 		                      </fieldset>

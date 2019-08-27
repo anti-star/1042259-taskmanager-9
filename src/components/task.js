@@ -1,35 +1,8 @@
-const getDate = (time) => {
-  const NAMES_MONTH = [
-    `JANUARY`,
-    `FEBRUARY`,
-    `MARCH`,
-    `APRIL`,
-    `MAY`,
-    `JUNE`,
-    `JULY`,
-    `AUGUST`,
-    `SEPTEMBER`,
-    `OCTOBER`,
-    `NOVEMBER`,
-    `DECEMBER`];
-  return (new Date(time).getDate() + ` ` + NAMES_MONTH[new Date(time).getMonth()]);
-};
-
-const getTime = (time) => {
-  let hours = new Date(time).getHours();
-  let minutes = new Date(time).getMinutes();
-  let dd = `AM`;
-  if ((hours > 12) || (hours === 0)) {
-    hours = hours - 12;
-    dd = `PM`;
-  }
-  minutes = minutes < 10 ? `0` + minutes : minutes;
-  return (hours + `:` + minutes + ` ` + dd);
-};
-
 export const makeTask = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
+  let repeatDay = repeatingDays;
+  let repeatDayObj = Object.keys(repeatDay);
   return `<article class="card card--${color}
-  ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``}
+  ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
   ${isFavorite ? `card--favorite` : ``}
   ${isArchive ? `card--archive` : ``}
   ${dueDate === Date.now() ? `card--deadline` : ``}">
@@ -66,8 +39,8 @@ export const makeTask = ({description, dueDate, repeatingDays, tags, color, isFa
 	                    <div class="card__dates">
 	                      <div class="card__date-deadline">
 	                        <p class="card__input-deadline-wrap">
-	                          <span class="card__date">${getDate(dueDate)}</span>
-	                          <span class="card__time">${getTime(dueDate)}</span>
+	                          <span class="card__date">${dueDate[0]}</span>
+	                          <span class="card__time">${dueDate[1]}</span>
 	                        </p>
 	                      </div>
 	                    </div>
