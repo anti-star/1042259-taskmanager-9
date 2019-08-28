@@ -1,11 +1,13 @@
-export const makeTask = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
+import {formatDate} from "./data.js";
+
+export const createTaskTemplate = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
   let repeatDay = repeatingDays;
   let repeatDayObj = Object.keys(repeatDay);
   return `<article class="card card--${color}
   ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
   ${isFavorite ? `card--favorite` : ``}
   ${isArchive ? `card--archive` : ``}
-  ${dueDate === Date.now() ? `card--deadline` : ``}">
+  ${formatDate(dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
@@ -39,8 +41,8 @@ export const makeTask = ({description, dueDate, repeatingDays, tags, color, isFa
 	                    <div class="card__dates">
 	                      <div class="card__date-deadline">
 	                        <p class="card__input-deadline-wrap">
-	                          <span class="card__date">${dueDate[0]}</span>
-	                          <span class="card__time">${dueDate[1]}</span>
+	                          <span class="card__date">${formatDate(dueDate, `DAY MONTH`)}</span>
+	                          <span class="card__time">${formatDate(dueDate, `HOUR:MINUTE DD`)}</span>
 	                        </p>
 	                      </div>
 	                    </div>

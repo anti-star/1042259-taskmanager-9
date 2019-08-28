@@ -1,4 +1,4 @@
-export const getSearchMarkup = () => {
+export const createSearchTemplate = () => {
   return `<section class="main__search search container">
 		        <input
 		          type="text"

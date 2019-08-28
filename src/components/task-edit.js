@@ -1,10 +1,12 @@
-export const makeTaskEdit = (task) => {
+import {formatDate} from "./data.js";
+
+export const createTaskEditTemplate = (task) => {
   let repeatDay = task.repeatingDays;
   let repeatDayObj = Object.keys(repeatDay);
   return `<article class="card card--edit card--${task.color} ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
   ${task.isFavorite ? `card--favorite` : ``}
   ${task.isArchive ? `card--archive` : ``}
-  ${task.dueDate === Date.now() ? `card--deadline` : ``}">
+  ${formatDate(task.dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -49,7 +51,7 @@ export const makeTaskEdit = (task) => {
 		                            type="text"
 		                            placeholder=""
 									name="date"
-									value="${task.dueDate.join(` `)}"
+									value="${formatDate(task.dueDate, `DAY MONTH HOUR:MINUTE DD`)}"
 		                          />
 		                        </label>
 		                      </fieldset>

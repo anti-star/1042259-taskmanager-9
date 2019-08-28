@@ -1,5 +1,9 @@
-const getRandom = (min, max) => {
+const getRandomNumber = (min, max) => {
   return (Math.round(Math.random() * (max - min) + min));
+};
+
+const getRandomArrayElement = (array) => {
+  return array[getRandomNumber(0, array.length - 1)];
 };
 
 const shuffleArray = (array) => {
@@ -9,16 +13,16 @@ const shuffleArray = (array) => {
     array[i] = array[j];
     array[j] = temp;
   }
-  return array;
+  return array.slice(0, getRandomNumber(0, 3));
 };
 
-const getBoolean = () => {
-  return Boolean(getRandom(0, 1));
+const getRandomBoolean = () => {
+  return Boolean(getRandomNumber(0, 1));
 };
 
-const getTaskDate = (time) => {
+export const formatDate = (time, format) => {
   const taskDate = new Date(time);
-  const NAMES_MONTH = [
+  const monthNames = [
     `JANUARY`,
     `FEBRUARY`,
     `MARCH`,
@@ -39,70 +43,81 @@ const getTaskDate = (time) => {
     dd = `PM`;
   }
   minutes = minutes < 10 ? `0` + minutes : minutes;
-  return ([taskDate.getDate() + ` ` + NAMES_MONTH[taskDate.getMonth()], hours + `:` + minutes + ` ` + dd]);
+
+  const formatedDate = format
+  .replace(`DAY`, taskDate.getDate())
+  .replace(`MONTH`, monthNames[taskDate.getMonth()])
+  .replace(`HOUR`, hours)
+  .replace(`MINUTE`, minutes)
+  .replace(`DD`, dd);
+  return formatedDate;
 };
 
-export const getTaskRandom = () => ({
-  description: [
+const getTaskRandom = () => ({
+  description: getRandomArrayElement([
     `Изучить теорию`,
     `Сделать домашку`,
     `Пройти интенсив на соточку`,
-  ][getRandom(0, 3)],
-  dueDate: getTaskDate(Date.now() + 1 + getRandom(-7, 7) * 24 * 60 * 60 * 1000),
+  ]),
+  dueDate: Date.now() + 1 + getRandomNumber(-7, 7) * 24 * 60 * 60 * 1000,
   tags: new Set(shuffleArray([
     `homework`,
     `theory`,
     `practice`,
     `intensive`,
     `keks`,
-  ]).slice(0, getRandom(0, 3))),
+  ])),
   repeatingDays: {
-    'mo': getBoolean(),
-    'tu': getBoolean(),
-    'we': getBoolean(),
-    'th': getBoolean(),
-    'fr': getBoolean(),
-    'sa': getBoolean(),
-    'su': getBoolean(),
+    'mo': getRandomBoolean(),
+    'tu': getRandomBoolean(),
+    'we': getRandomBoolean(),
+    'th': getRandomBoolean(),
+    'fr': getRandomBoolean(),
+    'sa': getRandomBoolean(),
+    'su': getRandomBoolean(),
   },
-  color: [
+  color: getRandomArrayElement([
     `black`,
     `yellow`,
     `blue`,
     `green`,
     `pink`,
-  ][getRandom(0, 5)],
-  isFavorite: getBoolean(),
-  isArchive: getBoolean(),
+  ]),
+  isFavorite: getRandomBoolean(),
+  isArchive: getRandomBoolean(),
 });
 
-const getOverdueCount = (array) => {
-  return array.dueDate < Date.now();
+export const getTasksArray = (count) => {
+  return new Array(count).fill(``).map(getTaskRandom);
 };
 
-const getTodayCount = (array) => {
-  return new Date(array.dueDate).toDateString() === new Date().toDateString();
+const isToday = (task) => {
+  return formatDate(task.dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`);
 };
 
-const getFavoritesCount = (array) => {
-  return array.isFavorite;
+const isOverdue = (task) => {
+  return task.dueDate < Date.now() && !isToday(task);
 };
 
-const getRepeatingCount = (array) => {
-  let repeatDay = array.repeatingDays;
+const isFavorites = (task) => {
+  return task.isFavorite;
+};
+
+const isRepeating = (task) => {
+  let repeatDay = task.repeatingDays;
   let repeatDayObj = Object.keys(repeatDay);
   return repeatDayObj.some((day) => repeatDay[day]);
 };
 
-const getTagsCount = (array) => {
-  return Array.from(array.tags).length > 0;
+const isTags = (task) => {
+  return Array.from(task.tags).length > 0;
 };
 
-const getArchiveCount = (array) => {
-  return array.isArchive;
+const isArchive = (task) => {
+  return task.isArchive;
 };
 
-export const filters = (tasks) => {
+export const getFilters = (tasks) => {
   return [
     {
       title: `ALL`,
@@ -110,27 +125,27 @@ export const filters = (tasks) => {
     },
     {
       title: `OVERDUE`,
-      count: tasks.filter(getOverdueCount).length,
+      count: tasks.filter(isOverdue).length,
     },
     {
       title: `TODAY`,
-      count: tasks.filter(getTodayCount).length,
+      count: tasks.filter(isToday).length,
     },
     {
       title: `FAVORITES`,
-      count: tasks.filter(getFavoritesCount).length,
+      count: tasks.filter(isFavorites).length,
     },
     {
       title: `REPEATING`,
-      count: tasks.filter(getRepeatingCount).length,
+      count: tasks.filter(isRepeating).length,
     },
     {
       title: `TAGS`,
-      count: tasks.filter(getTagsCount).length,
+      count: tasks.filter(isTags).length,
     },
     {
       title: `ARCHIVE `,
-      count: tasks.filter(getArchiveCount).length,
+      count: tasks.filter(isArchive).length,
     },
   ];
 };

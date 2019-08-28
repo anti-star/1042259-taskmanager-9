@@ -1,4 +1,4 @@
-export const makeFilters = (array) => {
+export const createFiltersTemplate = (array) => {
   return `<section class="main__filter filter container">
 		        <input
 		          type="radio"
