@@ -91,7 +91,7 @@ export const getTasksArray = (count) => {
   return new Array(count).fill(``).map(getTaskRandom);
 };
 
-const isToday = (task) => {
+export const isToday = (task) => {
   return formatDate(task.dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`);
 };
 
@@ -103,7 +103,7 @@ const isFavorites = (task) => {
   return task.isFavorite;
 };
 
-const isRepeating = (task) => {
+export const isRepeating = (task) => {
   let repeatDay = task.repeatingDays;
   let repeatDayObj = Object.keys(repeatDay);
   return repeatDayObj.some((day) => repeatDay[day]);

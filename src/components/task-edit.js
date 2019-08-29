@@ -1,12 +1,12 @@
 import {formatDate} from "./data.js";
+import {isToday} from "./data.js";
+import {isRepeating} from "./data.js";
 
 export const createTaskEditTemplate = (task) => {
-  let repeatDay = task.repeatingDays;
-  let repeatDayObj = Object.keys(repeatDay);
-  return `<article class="card card--edit card--${task.color} ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
+  return `<article class="card card--edit card--${task.color} ${isRepeating(task) ? `card--repeat` : ``}
   ${task.isFavorite ? `card--favorite` : ``}
   ${task.isArchive ? `card--archive` : ``}
-  ${formatDate(task.dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
+  ${isToday(task) ? `card--deadline` : ``}">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -58,10 +58,10 @@ export const createTaskEditTemplate = (task) => {
 
 		                      <button class="card__repeat-toggle" type="button">
 								repeat:<span class="card__repeat-status">
-								${Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]) ? `yes` : `no`}</span>
+								${isRepeating(task) ? `yes` : `no`}</span>
 		                      </button>
 
-							  <fieldset class="card__repeat-days" ${Object.keys(task.repeatingDays).some((day) => task.repeatingDays[day]) ? `` : `disabled`}>
+							  <fieldset class="card__repeat-days" ${isRepeating(task) ? `` : `disabled`}>
 								<div class="card__repeat-days-inner">
 								${[`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => `<input
 								class="visually-hidden card__repeat-day-input"

@@ -1,13 +1,13 @@
 import {formatDate} from "./data.js";
+import {isToday} from "./data.js";
+import {isRepeating} from "./data.js";
 
-export const createTaskTemplate = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
-  let repeatDay = repeatingDays;
-  let repeatDayObj = Object.keys(repeatDay);
-  return `<article class="card card--${color}
-  ${repeatDayObj.some((day) => repeatDay[day]) ? `card--repeat` : ``}
-  ${isFavorite ? `card--favorite` : ``}
-  ${isArchive ? `card--archive` : ``}
-  ${formatDate(dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
+export const createTaskTemplate = (task) => {
+  return `<article class="card card--${task.color}
+  ${isRepeating(task) ? `card--repeat` : ``}
+  ${task.isFavorite ? `card--favorite` : ``}
+  ${task.isArchive ? `card--archive` : ``}
+  ${isToday(task) ? `card--deadline` : ``}">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
@@ -32,7 +32,7 @@ export const createTaskTemplate = ({description, dueDate, repeatingDays, tags, c
 	                </div>
 
 	                <div class="card__textarea-wrap">
-	                  <p class="card__text">${description}</p>
+	                  <p class="card__text">${task.description}</p>
 	                </div>
 					<div class="card__hashtag">
 					<div class="card__hashtag-list">
@@ -41,15 +41,15 @@ export const createTaskTemplate = ({description, dueDate, repeatingDays, tags, c
 	                    <div class="card__dates">
 	                      <div class="card__date-deadline">
 	                        <p class="card__input-deadline-wrap">
-	                          <span class="card__date">${formatDate(dueDate, `DAY MONTH`)}</span>
-	                          <span class="card__time">${formatDate(dueDate, `HOUR:MINUTE DD`)}</span>
+	                          <span class="card__date">${formatDate(task.dueDate, `DAY MONTH`)}</span>
+	                          <span class="card__time">${formatDate(task.dueDate, `HOUR:MINUTE DD`)}</span>
 	                        </p>
 	                      </div>
 	                    </div>
 
 	                    <div class="card__hashtag">
 						  <div class="card__hashtag-list">
-						  ${Array.from(tags).map((tag) => `<span class="card__hashtag-inner">
+						  ${Array.from(task.tags).map((tag) => `<span class="card__hashtag-inner">
 	                          <span class="card__hashtag-name">
                                 #${tag}
                               </span>
