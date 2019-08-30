@@ -1,5 +1,13 @@
-export const getCardMarkup = () => {
-  return `<article class="card card--black">
+import {formatDate} from "./data.js";
+import {isToday} from "./data.js";
+import {isRepeating} from "./data.js";
+
+export const createTaskTemplate = (task) => {
+  return `<article class="card card--${task.color}
+  ${isRepeating(task) ? `card--repeat` : ``}
+  ${task.isFavorite ? `card--favorite` : ``}
+  ${task.isArchive ? `card--archive` : ``}
+  ${isToday(task) ? `card--deadline` : ``}">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
@@ -24,44 +32,33 @@ export const getCardMarkup = () => {
 	                </div>
 
 	                <div class="card__textarea-wrap">
-	                  <p class="card__text">Example default task with default color.</p>
+	                  <p class="card__text">${task.description}</p>
 	                </div>
-
+					<div class="card__hashtag">
+					<div class="card__hashtag-list">
 	                <div class="card__settings">
 	                  <div class="card__details">
 	                    <div class="card__dates">
 	                      <div class="card__date-deadline">
 	                        <p class="card__input-deadline-wrap">
-	                          <span class="card__date">23 September</span>
-	                          <span class="card__time">11:15 PM</span>
+	                          <span class="card__date">${formatDate(task.dueDate, `DAY MONTH`)}</span>
+	                          <span class="card__time">${formatDate(task.dueDate, `HOUR:MINUTE DD`)}</span>
 	                        </p>
 	                      </div>
 	                    </div>
 
 	                    <div class="card__hashtag">
-	                      <div class="card__hashtag-list">
-	                        <span class="card__hashtag-inner">
+						  <div class="card__hashtag-list">
+						  ${Array.from(task.tags).map((tag) => `<span class="card__hashtag-inner">
 	                          <span class="card__hashtag-name">
-	                            #todo
-	                          </span>
-	                        </span>
-
-	                        <span class="card__hashtag-inner">
-	                          <span class="card__hashtag-name">
-	                            #personal
-	                          </span>
-	                        </span>
-
-	                        <span class="card__hashtag-inner">
-	                          <span class="card__hashtag-name">
-	                            #important
-	                          </span>
-	                        </span>
+                                #${tag}
+                              </span>
+                            </span>`).join(``)}
 	                      </div>
 	                    </div>
 	                  </div>
 	                </div>
 	              </div>
 	            </div>
-			  </article>`;
+			  </article>`.trim();
 };
