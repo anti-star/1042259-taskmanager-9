@@ -1,13 +1,32 @@
-import {formatDate} from "./data.js";
-import {isToday} from "./data.js";
-import {isRepeating} from "./data.js";
+import {formatDate} from "../data.js";
+import {createElement} from "../utils.js";
 
-export const createTaskTemplate = (task) => {
-  return `<article class="card card--${task.color}
-  ${isRepeating(task) ? `card--repeat` : ``}
-  ${task.isFavorite ? `card--favorite` : ``}
-  ${task.isArchive ? `card--archive` : ``}
-  ${isToday(task) ? `card--deadline` : ``}">
+export default class Task {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
+    this._description = description;
+    this._dueDate = new Date(dueDate);
+    this._tags = tags;
+    this._color = color;
+    this._element = null;
+    this._repeatingDays = repeatingDays;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `<article class="card card--${this._color}
+    ${Object.values(this._repeatingDays).some((item) => item) ? `card--repeat` : ``}
+    ${formatDate(this._dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
@@ -32,7 +51,7 @@ export const createTaskTemplate = (task) => {
 	                </div>
 
 	                <div class="card__textarea-wrap">
-	                  <p class="card__text">${task.description}</p>
+	                  <p class="card__text">${this._description}</p>
 	                </div>
 					<div class="card__hashtag">
 					<div class="card__hashtag-list">
@@ -41,15 +60,15 @@ export const createTaskTemplate = (task) => {
 	                    <div class="card__dates">
 	                      <div class="card__date-deadline">
 	                        <p class="card__input-deadline-wrap">
-	                          <span class="card__date">${formatDate(task.dueDate, `DAY MONTH`)}</span>
-	                          <span class="card__time">${formatDate(task.dueDate, `HOUR:MINUTE DD`)}</span>
+	                          <span class="card__date">${formatDate(this._dueDate, `DAY MONTH`)}</span>
+	                          <span class="card__time">${formatDate(this._dueDate, `HOUR:MINUTE DD`)}</span>
 	                        </p>
 	                      </div>
 	                    </div>
 
 	                    <div class="card__hashtag">
 						  <div class="card__hashtag-list">
-						  ${Array.from(task.tags).map((tag) => `<span class="card__hashtag-inner">
+						  ${Array.from(this._tags).map((tag) => `<span class="card__hashtag-inner">
 	                          <span class="card__hashtag-name">
                                 #${tag}
                               </span>
@@ -60,5 +79,6 @@ export const createTaskTemplate = (task) => {
 	                </div>
 	              </div>
 	            </div>
-			  </article>`.trim();
-};
+			  </article>`;
+  }
+}

@@ -1,12 +1,29 @@
-import {formatDate} from "./data.js";
-import {isToday} from "./data.js";
-import {isRepeating} from "./data.js";
+import {formatDate} from "../data.js";
+import {colors} from "../data.js";
+import {createElement} from "../utils.js";
 
-export const createTaskEditTemplate = (task) => {
-  return `<article class="card card--edit card--${task.color} ${isRepeating(task) ? `card--repeat` : ``}
-  ${task.isFavorite ? `card--favorite` : ``}
-  ${task.isArchive ? `card--archive` : ``}
-  ${isToday(task) ? `card--deadline` : ``}">
+export default class TaskEdit {
+  constructor({description, dueDate, tags, color, repeatingDays}) {
+    this._description = description;
+    this._dueDate = new Date(dueDate);
+    this._tags = tags;
+    this._color = color;
+    this._element = null;
+    this._repeatingDays = repeatingDays;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  getTemplate() {
+    return `<article class="card card--edit card--${this._color}
+    ${Object.values(this._repeatingDays).some((item) => item) ? `card--repeat` : ``}
+    ${formatDate(this._dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -33,7 +50,7 @@ export const createTaskEditTemplate = (task) => {
 		                      class="card__text"
 		                      placeholder="Start typing your text here..."
 		                      name="text"
-		                    >${task.description}</textarea>
+		                    >${this._description}</textarea>
 		                  </label>
 		                </div>
 
@@ -41,27 +58,27 @@ export const createTaskEditTemplate = (task) => {
 		                  <div class="card__details">
 		                    <div class="card__dates">
 		                      <button class="card__date-deadline-toggle" type="button">
-								date: <span class="card__date-status">${task.dueDate ? `yes` : `no`}</span>
+								date: <span class="card__date-status">${this._dueDate ? `yes` : `no`}</span>
 		                      </button>
 
-		                      <fieldset class="card__date-deadline" ${task.dueDate ? `` : `disabled`}>
+		                      <fieldset class="card__date-deadline" ${this._dueDate ? `` : `disabled`}>
 		                        <label class="card__input-deadline-wrap">
 		                          <input
 		                            class="card__date"
 		                            type="text"
 		                            placeholder=""
 									name="date"
-									value="${formatDate(task.dueDate, `DAY MONTH HOUR:MINUTE DD`)}"
+									value="${formatDate(this._dueDate, `DAY MONTH HOUR:MINUTE DD`)}"
 		                          />
 		                        </label>
 		                      </fieldset>
 
 		                      <button class="card__repeat-toggle" type="button">
 								repeat:<span class="card__repeat-status">
-								${isRepeating(task) ? `yes` : `no`}</span>
+								${Object.values(this._repeatingDays).some((item) => item) ? `yes` : `no`}</span>
 		                      </button>
 
-							  <fieldset class="card__repeat-days" ${isRepeating(task) ? `` : `disabled`}>
+							  <fieldset class="card__repeat-days" ${Object.values(this._repeatingDays).some((item) => item) ? `` : `disabled`}>
 								<div class="card__repeat-days-inner">
 								${[`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => `<input
 								class="visually-hidden card__repeat-day-input"
@@ -69,18 +86,18 @@ export const createTaskEditTemplate = (task) => {
 								id="repeat-${day}-1"
 								name="repeat"
 								value="${day}"
-								${task.repeatingDays[day] ? `checked` : ``}
+								${this._repeatingDays[day] ? `checked` : ``}
 							  />
 							  <label class="card__repeat-day" for="repeat-${day}-1"
 								>${day}</label>`).join(``)}
-								
+
 		                        </div>
 		                      </fieldset>
 		                    </div>
 
 		                    <div class="card__hashtag">
 							  <div class="card__hashtag-list">
-							  ${Array.from(task.tags).map((tag) => `<span class="card__hashtag-inner">
+							  ${Array.from(this._tags).map((tag) => `<span class="card__hashtag-inner">
 							  <input
 								type="hidden"
 								name="hashtag"
@@ -110,13 +127,13 @@ export const createTaskEditTemplate = (task) => {
 		                  <div class="card__colors-inner">
 		                    <h3 class="card__colors-title">Color</h3>
 							<div class="card__colors-wrap">
-							${[`black`, `yellow`, `blue`, `green`, `pink`].map((color) => `<input
+							${colors.map((color) => `<input
 								  type="radio"
 		                          id="color-${color}-1"
 		                          class="card__color-input card__color-input--${color} visually-hidden"
 		                          name="color"
 								  value="${color}"
-								  ${color === task.color ? `checked` : ``}
+								  ${color === this._color ? `checked` : ``}
 		                        />
 		                      <label
 		                        for="color-${color}-1"
@@ -133,4 +150,5 @@ export const createTaskEditTemplate = (task) => {
 		              </div>
 		            </form>
 				  </article>`;
-};
+  }
+}

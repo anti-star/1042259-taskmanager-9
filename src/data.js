@@ -38,10 +38,13 @@ export const formatDate = (time, format) => {
   let hours = taskDate.getHours();
   let minutes = taskDate.getMinutes();
   let dd = `AM`;
-  if ((hours > 12) || (hours === 0)) {
+  if (hours > 12) {
     hours = hours - 12;
     dd = `PM`;
+  } else if (hours === 0) {
+    dd = `AM`;
   }
+
   minutes = minutes < 10 ? `0` + minutes : minutes;
 
   const formatedDate = format
@@ -53,13 +56,21 @@ export const formatDate = (time, format) => {
   return formatedDate;
 };
 
+export const colors = [
+  `black`,
+  `yellow`,
+  `blue`,
+  `green`,
+  `pink`,
+];
+
 const getTaskRandom = () => ({
   description: getRandomArrayElement([
     `Изучить теорию`,
     `Сделать домашку`,
     `Пройти интенсив на соточку`,
   ]),
-  dueDate: Date.now() + 1 + getRandomNumber(-7, 7) * 24 * 60 * 60 * 1000,
+  dueDate: Date.now() + getRandomNumber(-7, 7) * 24 * 60 * 60 * 1000 + getRandomNumber(1, 5) * 60 * 60 * 1000,
   tags: new Set(shuffleArray([
     `homework`,
     `theory`,
@@ -104,9 +115,8 @@ const isFavorites = (task) => {
 };
 
 export const isRepeating = (task) => {
-  let repeatDay = task.repeatingDays;
-  let repeatDayObj = Object.keys(repeatDay);
-  return repeatDayObj.some((day) => repeatDay[day]);
+  let repeatDaysValues = Object.values(task.repeatingDays);
+  return repeatDaysValues.some(day => day);
 };
 
 const isTags = (task) => {
@@ -117,34 +127,44 @@ const isArchive = (task) => {
   return task.isArchive;
 };
 
+export const getfilterStatus = ({title, count}) => {
+  let filterStatus = ``;
+  if (title === `all`) {
+    filterStatus = `checked`;
+  } else if (count == 0) {
+    filterStatus = `disabled`;
+  }
+  return filterStatus;
+}
+
 export const getFilters = (tasks) => {
   return [
     {
-      title: `ALL`,
+      title: `all`,
       count: tasks.length,
     },
     {
-      title: `OVERDUE`,
+      title: `overdue`,
       count: tasks.filter(isOverdue).length,
     },
     {
-      title: `TODAY`,
+      title: `today`,
       count: tasks.filter(isToday).length,
     },
     {
-      title: `FAVORITES`,
+      title: `favorites`,
       count: tasks.filter(isFavorites).length,
     },
     {
-      title: `REPEATING`,
+      title: `repeating`,
       count: tasks.filter(isRepeating).length,
     },
     {
-      title: `TAGS`,
+      title: `tags`,
       count: tasks.filter(isTags).length,
     },
     {
-      title: `ARCHIVE `,
+      title: `archive `,
       count: tasks.filter(isArchive).length,
     },
   ];
