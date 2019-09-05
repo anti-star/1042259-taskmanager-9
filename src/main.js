@@ -1,15 +1,15 @@
-import Menu from "./components/menu.js";
-import Search from "./components/search.js";
-import Filters from "./components/filters.js";
-import TaskBoard from "./components/task-board.js";
-import TaskEdit from "./components/task-edit.js";
-import Task from "./components/task.js";
-import LoadMore from "./components/button-load-more.js";
-import { getTasksArray } from "./data.js"
-import { getFilters } from "./data.js";
-import { Position } from "./utils.js";
-import { render } from  "./utils.js";
-import { unrender } from "./utils.js";
+import Menu from "./components/menu";
+import Search from "./components/search";
+import Filters from "./components/filters";
+import TaskBoard from "./components/task-board";
+import TaskEdit from "./components/task-edit";
+import Task from "./components/task";
+import LoadMore from "./components/button-load-more";
+import { getTasksArray } from "./data"
+import { getFilters } from "./data";
+import { Position } from "./utils";
+import { render } from  "./utils";
+import { unrender } from "./utils";
 
 const menuContainer = document.querySelector(`.main__control.control.container`);
 

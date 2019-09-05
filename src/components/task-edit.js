@@ -1,9 +1,9 @@
-import {formatDate} from "../data.js";
-import {colors} from "../data.js";
-import {isToday} from "../data.js";
-import {isRepeating} from "../data.js";
-import {daysWeek} from "../data.js";
-import {createElement} from "../utils.js";
+import {COLORS} from "../data";
+import {DAYS_WEEK} from "../data";
+import {formatDate} from "../data";
+import {isToday} from "../data";
+import {isRepeating} from "../data";
+import {createElement} from "../utils";
 
 export default class TaskEdit {
   constructor({description, dueDate, tags, color, repeatingDays}) {
@@ -83,7 +83,7 @@ export default class TaskEdit {
 
 							  <fieldset class="card__repeat-days" ${isRepeating(this._repeatingDays) ? `` : `disabled`}>
 								<div class="card__repeat-days-inner">
-								${daysWeek.map((day) => `<input
+								${DAYS_WEEK.map((day) => `<input
 								class="visually-hidden card__repeat-day-input"
 								type="checkbox"
 								id="repeat-${day}-1"
@@ -130,7 +130,7 @@ export default class TaskEdit {
 		                  <div class="card__colors-inner">
 		                    <h3 class="card__colors-title">Color</h3>
 							<div class="card__colors-wrap">
-							${colors.map((color) => `<input
+							${COLORS.map((color) => `<input
 								  type="radio"
 		                          id="color-${color}-1"
 		                          class="card__color-input card__color-input--${color} visually-hidden"

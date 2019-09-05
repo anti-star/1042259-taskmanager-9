@@ -1,7 +1,7 @@
-import {formatDate} from "../data.js";
-import {createElement} from "../utils.js";
-import {isToday} from "../data.js";
-import {isRepeating} from "../data.js";
+import {formatDate} from "../data";
+import {isToday} from "../data";
+import {isRepeating} from "../data";
+import {createElement} from "../utils";
 
 export default class Task {
   constructor({description, dueDate, tags, color, repeatingDays}) {

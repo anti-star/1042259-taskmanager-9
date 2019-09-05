@@ -1,3 +1,6 @@
+export const COLORS = [`black`, `yellow`, `blue`, `green`, `pink`];
+export const DAYS_WEEK = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
+
 const getRandomNumber = (min, max) => {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -22,36 +25,24 @@ const getRandomBoolean = () => {
 
 export const formatDate = (time, format) => {
   const taskDate = new Date(time);
-  const monthNames = [
-    `JANUARY`,
-    `FEBRUARY`,
-    `MARCH`,
-    `APRIL`,
-    `MAY`,
-    `JUNE`,
-    `JULY`,
-    `AUGUST`,
-    `SEPTEMBER`,
-    `OCTOBER`,
-    `NOVEMBER`,
-    `DECEMBER`];
-  let hours = taskDate.getHours();
-  let minutes = taskDate.getMinutes();
+  const MONTH_NAMES = [`JANUARY`, `FEBRUARY`, `MARCH`, `APRIL`, `MAY`, `JUNE`, `JULY`, `AUGUST`, `SEPTEMBER`, `OCTOBER`, `NOVEMBER`, `DECEMBER`];
+  let hour = taskDate.getHours();
+  let minute = taskDate.getMinutes();
   let dd = `AM`;
-  if (hours > 12) {
-    hours = hours - 12;
+  if (hour > 12) {
+    hour = hour - 12;
     dd = `PM`;
-  } else if (hours === 0) {
+  } else if (hour === 0) {
     dd = `AM`;
   }
 
-  minutes = minutes < 10 ? `0` + minutes : minutes;
+  minute = minute < 10 ? `0` + minute : minute;
 
   const formatedDate = format
   .replace(`DAY`, taskDate.getDate())
-  .replace(`MONTH`, monthNames[taskDate.getMonth()])
-  .replace(`HOUR`, hours)
-  .replace(`MINUTE`, minutes)
+  .replace(`MONTH`, MONTH_NAMES[taskDate.getMonth()])
+  .replace(`HOUR`, hour)
+  .replace(`MINUTE`, minute)
   .replace(`DD`, dd);
   return formatedDate;
 };
@@ -76,16 +67,6 @@ const isTags = (task) => {
 const isArchive = (task) => {
   return task.isArchive;
 };
-
-export const colors = [
-  `black`,
-  `yellow`,
-  `blue`,
-  `green`,
-  `pink`,
-];
-
-export const daysWeek = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
 
 const getTaskRandom = () => ({
   description: getRandomArrayElement([
@@ -117,8 +98,8 @@ const getTaskRandom = () => ({
     `green`,
     `pink`,
   ]),
-  isFavorite: getRandomBoolean(),
-  isArchive: getRandomBoolean(),
+  favorite: getRandomBoolean(),
+  archive: getRandomBoolean(),
 });
 
 export const getTasksArray = (count) => {

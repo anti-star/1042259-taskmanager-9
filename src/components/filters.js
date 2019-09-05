@@ -1,5 +1,5 @@
-import {createElement} from "../utils.js";
-import {getfilterStatus} from "../data.js";
+import {getfilterStatus} from "../data";
+import {createElement} from "../utils";
 
 export default class Filters {
   constructor(filters) {
