@@ -1,6 +1,4 @@
-import {formatDate} from "../data";
-import {isToday} from "../data";
-import {isRepeating} from "../data";
+import {formatDate, isToday, isRepeating} from "../data";
 import {createElement} from "../utils";
 
 export default class Task {

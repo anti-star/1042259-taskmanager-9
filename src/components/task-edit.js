@@ -1,8 +1,4 @@
-import {COLORS} from "../data";
-import {DAYS_WEEK} from "../data";
-import {formatDate} from "../data";
-import {isToday} from "../data";
-import {isRepeating} from "../data";
+import {COLORS, DAYS_WEEK, formatDate, isToday, isRepeating} from "../data";
 import {createElement} from "../utils";
 
 export default class TaskEdit {

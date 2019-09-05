@@ -19,7 +19,7 @@ export default class Filters {
     this._element = null;
   }
 
-  getTemplateItem(filter) {
+  _getTemplateItem(filter) {
     return `<input
     type="radio"
     id="filter__${filter.title}"
@@ -32,6 +32,6 @@ export default class Filters {
   }
 
   getTemplate() {
-    return `<section class="main__filter filter container">${this._filters.map((filter) => this.getTemplateItem(filter)).join(``)}</section>`;
+    return `<section class="main__filter filter container">${this._filters.map((filter) => this._getTemplateItem(filter)).join(``)}</section>`;
   }
 }
