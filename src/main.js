@@ -58,13 +58,13 @@ const renderTask = (taskMock) => {
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
 
-  render(taskContainer, task.getElement(), Position.BEFOREEND);
+  render(tasksContainer, task.getElement(), Position.BEFOREEND);
 };
 
 const taskMocks = getTasksArray(TASK_COUNT);
-export const filterMocks = getFilters(taskMocks);
+const filterMocks = getFilters(taskMocks);
 
-const filter = new Filters;
+const filter = new Filters(filterMocks);
 render(mainContainer, filter.getElement(), Position.BEFOREEND);
 
 const taskBoard = new TaskBoard;
@@ -74,7 +74,7 @@ const PAGE_SIZE = 8;
 const PAGE_COUNT = Math.ceil(TASK_COUNT / PAGE_SIZE);
 const loadMore = new LoadMore;
 
-const taskContainer = document.querySelector(`.board__tasks`);
+const tasksContainer = document.querySelector(`.board__tasks`);
 const boardContainer = document.querySelector(`.board.container`);
 
 const renderTasksPage = (firstIndex, lastIndex) => taskMocks.slice(firstIndex, lastIndex).forEach((taskMock) => renderTask(taskMock));

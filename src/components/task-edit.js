@@ -1,5 +1,8 @@
 import {formatDate} from "../data.js";
 import {colors} from "../data.js";
+import {isToday} from "../data.js";
+import {isRepeating} from "../data.js";
+import {daysWeek} from "../data.js";
 import {createElement} from "../utils.js";
 
 export default class TaskEdit {
@@ -22,8 +25,8 @@ export default class TaskEdit {
 
   getTemplate() {
     return `<article class="card card--edit card--${this._color}
-    ${Object.values(this._repeatingDays).some((item) => item) ? `card--repeat` : ``}
-    ${formatDate(this._dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
+    ${isRepeating(this._repeatingDays) ? `card--repeat` : ``}
+    ${isToday(this._dueDate) ? `card--deadline` : ``}">
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">
@@ -75,12 +78,12 @@ export default class TaskEdit {
 
 		                      <button class="card__repeat-toggle" type="button">
 								repeat:<span class="card__repeat-status">
-								${Object.values(this._repeatingDays).some((item) => item) ? `yes` : `no`}</span>
+								${isRepeating(this._repeatingDays) ? `yes` : `no`}</span>
 		                      </button>
 
-							  <fieldset class="card__repeat-days" ${Object.values(this._repeatingDays).some((item) => item) ? `` : `disabled`}>
+							  <fieldset class="card__repeat-days" ${isRepeating(this._repeatingDays) ? `` : `disabled`}>
 								<div class="card__repeat-days-inner">
-								${[`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`].map((day) => `<input
+								${daysWeek.map((day) => `<input
 								class="visually-hidden card__repeat-day-input"
 								type="checkbox"
 								id="repeat-${day}-1"

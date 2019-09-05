@@ -56,6 +56,27 @@ export const formatDate = (time, format) => {
   return formatedDate;
 };
 
+const isOverdue = (task) => {
+  return task.dueDate < Date.now() && !isToday(task);
+};
+
+const isFavorites = (task) => {
+  return task.isFavorite;
+};
+
+export const isRepeating = (task) => {
+  let repeatDaysValues = Object.values(task);
+  return repeatDaysValues.some(day => day);
+};
+
+const isTags = (task) => {
+  return Array.from(task.tags).length > 0;
+};
+
+const isArchive = (task) => {
+  return task.isArchive;
+};
+
 export const colors = [
   `black`,
   `yellow`,
@@ -63,6 +84,8 @@ export const colors = [
   `green`,
   `pink`,
 ];
+
+export const daysWeek = [`mo`, `tu`, `we`, `th`, `fr`, `sa`, `su`];
 
 const getTaskRandom = () => ({
   description: getRandomArrayElement([
@@ -103,31 +126,10 @@ export const getTasksArray = (count) => {
 };
 
 export const isToday = (task) => {
-  return formatDate(task.dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`);
+  return formatDate(task, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`);
 };
 
-const isOverdue = (task) => {
-  return task.dueDate < Date.now() && !isToday(task);
-};
-
-const isFavorites = (task) => {
-  return task.isFavorite;
-};
-
-export const isRepeating = (task) => {
-  let repeatDaysValues = Object.values(task.repeatingDays);
-  return repeatDaysValues.some(day => day);
-};
-
-const isTags = (task) => {
-  return Array.from(task.tags).length > 0;
-};
-
-const isArchive = (task) => {
-  return task.isArchive;
-};
-
-export const getfilterStatus = ({title, count}) => {
+export const getfilterStatus = (title,count) => {
   let filterStatus = ``;
   if (title === `all`) {
     filterStatus = `checked`;
@@ -149,7 +151,7 @@ export const getFilters = (tasks) => {
     },
     {
       title: `today`,
-      count: tasks.filter(isToday).length,
+      count: tasks.filter((task) => isToday(task.dueDate)).length,
     },
     {
       title: `favorites`,
@@ -157,7 +159,7 @@ export const getFilters = (tasks) => {
     },
     {
       title: `repeating`,
-      count: tasks.filter(isRepeating).length,
+      count: tasks.filter((task) => isRepeating(task.repeatingDays)).length,
     },
     {
       title: `tags`,

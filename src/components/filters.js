@@ -1,9 +1,9 @@
 import {createElement} from "../utils.js";
-import {filterMocks} from "../main.js";
 import {getfilterStatus} from "../data.js";
 
 export default class Filters {
-  constructor() {
+  constructor(filters) {
+    this._filters = filters;
     this._element = null;
   }
 
@@ -19,19 +19,19 @@ export default class Filters {
     this._element = null;
   }
 
-  getTemplateItem({title, count}) {
+  getTemplateItem(filter) {
     return `<input
     type="radio"
-    id="filter__${title}"
+    id="filter__${filter.title}"
     class="filter__input visually-hidden"
     name="filter"
-    ${getfilterStatus({title, count})}
+    ${getfilterStatus(filter.title, filter.count)}
   />
-  <label for="filter__${title}" class="filter__label">
-    ${title} <span class="filter__${title}-count">${count}</span></label>`;
+  <label for="filter__${filter.title}" class="filter__label">
+    ${filter.title} <span class="filter__${filter.title}-count">${filter.count}</span></label>`;
   }
 
   getTemplate() {
-    return `<section class="main__filter filter container">${filterMocks.map((filter) => this.getTemplateItem(filter)).join(``)}</section>`;
+    return `<section class="main__filter filter container">${this._filters.map((filter) => this.getTemplateItem(filter)).join(``)}</section>`;
   }
 }

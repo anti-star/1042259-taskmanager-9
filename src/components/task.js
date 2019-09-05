@@ -1,5 +1,7 @@
 import {formatDate} from "../data.js";
 import {createElement} from "../utils.js";
+import {isToday} from "../data.js";
+import {isRepeating} from "../data.js";
 
 export default class Task {
   constructor({description, dueDate, tags, color, repeatingDays}) {
@@ -25,8 +27,8 @@ export default class Task {
 
   getTemplate() {
     return `<article class="card card--${this._color}
-    ${Object.values(this._repeatingDays).some((item) => item) ? `card--repeat` : ``}
-    ${formatDate(this._dueDate, `DAY MONTH`) === formatDate(Date.now(), `DAY MONTH`) ? `card--deadline` : ``}">
+    ${isRepeating(this._repeatingDays) ? `card--repeat` : ``}
+    ${isToday(this._dueDate) ? `card--deadline` : ``}">
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">
