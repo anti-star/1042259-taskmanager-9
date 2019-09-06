@@ -1,18 +1,16 @@
-import {COLORS} from "../data";
-import {DAYS_WEEK} from "../data";
-import {formatDate} from "../data";
-import {isToday} from "../data";
-import {isRepeating} from "../data";
+import {COLORS, DAYS_WEEK, formatDate, isToday, isArchive, isRepeating, isFavorite} from "../data";
 import {createElement} from "../utils";
 
 export default class TaskEdit {
-  constructor({description, dueDate, tags, color, repeatingDays}) {
+  constructor({description, dueDate, tags, color, repeatingDays, favorite, archive}) {
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
     this._element = null;
     this._repeatingDays = repeatingDays;
+    this._favorite = favorite;
+    this._archive = archive;
   }
 
   getElement() {
@@ -27,6 +25,8 @@ export default class TaskEdit {
     return `<article class="card card--edit card--${this._color}
     ${isRepeating(this._repeatingDays) ? `card--repeat` : ``}
     ${isToday(this._dueDate) ? `card--deadline` : ``}">
+    ${isFavorite(this._favorite) ? `card--favorite` : ``}
+    ${isArchive(this._archive) ? `card--archive` : ``},
 		            	<form class="card__form" method="get">
 		              	<div class="card__inner">
 		                	<div class="card__control">

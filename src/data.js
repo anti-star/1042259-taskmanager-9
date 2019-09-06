@@ -51,8 +51,8 @@ const isOverdue = (task) => {
   return task.dueDate < Date.now() && !isToday(task);
 };
 
-const isFavorites = (task) => {
-  return task.isFavorite;
+export const isFavorite = (task) => {
+  return task;
 };
 
 export const isRepeating = (task) => {
@@ -64,8 +64,8 @@ const isTags = (task) => {
   return Array.from(task.tags).length > 0;
 };
 
-const isArchive = (task) => {
-  return task.isArchive;
+export const isArchive = (task) => {
+  return task;
 };
 
 const getTaskRandom = () => ({
@@ -124,7 +124,7 @@ export const getFilters = (tasks) => {
   return [
     {
       title: `all`,
-      count: tasks.length,
+      count: tasks.length - tasks.filter((task) => isArchive(task.archive)).length,
     },
     {
       title: `overdue`,
@@ -136,7 +136,7 @@ export const getFilters = (tasks) => {
     },
     {
       title: `favorites`,
-      count: tasks.filter(isFavorites).length,
+      count: tasks.filter((task) => isFavorite(task.favorite)).length,
     },
     {
       title: `repeating`,
@@ -148,7 +148,7 @@ export const getFilters = (tasks) => {
     },
     {
       title: `archive `,
-      count: tasks.filter(isArchive).length,
+      count: tasks.filter((task) => isArchive(task.archive)).length,
     },
   ];
 };
