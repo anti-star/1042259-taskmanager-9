@@ -1,16 +1,16 @@
-import {formatDate} from "../data";
-import {isToday} from "../data";
-import {isRepeating} from "../data";
+import {formatDate, isToday, isArchive, isRepeating, isFavorite} from "../data";
 import {createElement} from "../utils";
 
 export default class Task {
-  constructor({description, dueDate, tags, color, repeatingDays}) {
+  constructor({description, dueDate, tags, color, repeatingDays, favorite, archive}) {
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
     this._element = null;
     this._repeatingDays = repeatingDays;
+    this._favorite = favorite;
+    this._archive = archive;
   }
 
   getElement() {
@@ -29,6 +29,8 @@ export default class Task {
     return `<article class="card card--${this._color}
     ${isRepeating(this._repeatingDays) ? `card--repeat` : ``}
     ${isToday(this._dueDate) ? `card--deadline` : ``}">
+    ${isFavorite(this._favorite) ? `card--favorite` : ``}
+    ${isArchive(this._archive) ? `card--archive` : ``},
 	            <div class="card__form">
 	              <div class="card__inner">
 	                <div class="card__control">

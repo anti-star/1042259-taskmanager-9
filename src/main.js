@@ -2,6 +2,7 @@ import Menu from "./components/menu";
 import Search from "./components/search";
 import Filters from "./components/filters";
 import TaskBoard from "./components/task-board";
+import TaskBoardEmpty from "./components/task-board-empty";
 import TaskEdit from "./components/task-edit";
 import Task from "./components/task";
 import LoadMore from "./components/button-load-more";
@@ -16,7 +17,7 @@ const menuContainer = document.querySelector(`.main__control.control.container`)
 const menu = new Menu;
 render(menuContainer, menu.getElement(), Position.BEFOREEND);
 
-const TASK_COUNT = 10;
+const TASK_COUNT = 19;
 
 const mainContainer = document.querySelector(`.main`);
 
@@ -63,12 +64,16 @@ const renderTask = (taskMock) => {
 
 const taskMocks = getTasksArray(TASK_COUNT);
 const filterMocks = getFilters(taskMocks);
-
 const filter = new Filters(filterMocks);
 render(mainContainer, filter.getElement(), Position.BEFOREEND);
 
 const taskBoard = new TaskBoard;
-render(mainContainer, taskBoard.getElement(), Position.BEFOREEND);
+const taskBoardEmpty = new TaskBoardEmpty;
+if (filterMocks[0].count === 0) {
+  render(mainContainer, taskBoardEmpty.getElement(), Position.BEFOREEND);
+} else {
+  render(mainContainer, taskBoard.getElement(), Position.BEFOREEND);
+}
 
 const PAGE_SIZE = 8;
 const PAGE_COUNT = Math.ceil(TASK_COUNT / PAGE_SIZE);
