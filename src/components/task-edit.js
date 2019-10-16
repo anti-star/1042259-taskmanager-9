@@ -1,24 +1,16 @@
 import {COLORS, DAYS_WEEK, formatDate, isToday, isArchive, isRepeating, isFavorite} from "../data";
-import {createElement} from "../utils";
+import AbstractComponent from "./absctract-component";
 
-export default class TaskEdit {
+export default class TaskEdit extends AbstractComponent {
   constructor({description, dueDate, tags, color, repeatingDays, favorite, archive}) {
+    super();
     this._description = description;
     this._dueDate = new Date(dueDate);
     this._tags = tags;
     this._color = color;
-    this._element = null;
     this._repeatingDays = repeatingDays;
     this._favorite = favorite;
     this._archive = archive;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   getTemplate() {

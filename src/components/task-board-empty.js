@@ -1,29 +1,15 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./absctract-component";
 
-export default class TaskBoardEmpty {
+export default class TaskBoardEmpty extends AbstractComponent {
   constructor() {
-    this._element = null;
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+    super();
   }
 
   getTemplate() {
-    return `<section class="board container">
-    <p class="board__no-tasks">
+    return `<p class="board__no-tasks">
       Congratulations, all tasks were completed! To create a new click on
       «add new task» button.
-    </p>
-  </section>`;
+    </p>`;
   }
 }
 
